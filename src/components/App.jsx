@@ -3,29 +3,17 @@ import { nanoid } from 'nanoid';
 
 
 
-class App extends Component {
+export default class App extends Component {
   state = {
     
-
   };
 
-  componentDidMount() {
- 
-  }
 
-  componentDidUpdate(prevProps, prevState) {
-  
-  }
-  
- 
   render = () => {
     return (
       <>
-    Hello    
+        Hello
       </>
     );
+  };
 }
-
-
-export default App;
-
