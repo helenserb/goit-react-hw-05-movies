@@ -11,19 +11,24 @@ import ImageGallery from './ImageGallery/ImageGallery';
 
 export default class App extends Component {
   state = {
-    query:'', 
+    query: '', 
+    page: 1,
   };
 
-
   handleSubmit = (query) => {
-    this.setState({ query });
+    this.setState({ query, page: 1 });
+  }
+
+  incrementPage = () => {
+    this.setState(prevState => ({page: prevState.page + 1}))
   }
 
   render = () => {
+    const { query, page } = this.state;
     return (
       <div className={css.App}>
         <Searchbar onSubmit={this.handleSubmit} />
-        <ImageGallery query={this.state.query} />
+        <ImageGallery query={query} page={page} onIncrementPage={this.incrementPage} />
         <ToastContainer autoClose={3000} />
       </div>
     );
