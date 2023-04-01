@@ -26,9 +26,7 @@ export default class ImageGallery extends Component {
         console.log(data);
 
         if (data.totalHits === 0) {
-          return Promise.reject(
-            new Error(`По вашому запиту ${query} нічого не знайдено`)
-          );
+          throw new Error(`По вашому запиту ${query} нічого не знайдено`);
         }
         this.setState(prevState => ({
           images: [...prevState.images, ...data.hits],
@@ -44,9 +42,31 @@ export default class ImageGallery extends Component {
   render = () => {
     const { images, error, status } = this.state;
 
-    if (status === 'pending') {
-      return <Loader />;
+    if (status === 'idle') {
+          return;
         }
+    
+        // if (status === 'pending') {
+          
+    if (status === 'pending') {
+      return images.length > 0 ? (
+        <>
+          <ul className={css.ImageGallery}>
+            {images.map(({ id, webformatURL, largeImageURL, tags }) => (
+              <ImageGalleryItem
+                key={id}
+                webformatURL={webformatURL}
+                largeImageURL={largeImageURL}
+                tags={tags}
+              />
+            ))}
+          </ul>
+          <Loader />
+        </>
+      ) : (
+        <Loader />
+      );
+    }
 
     if (status === 'rejected') {
           return <h2>{error.message}</h2>
