@@ -1,6 +1,8 @@
 import Modal from 'components/Modal/Modal';
 import { Component } from 'react'
+
 import css from './ImageGalleryItem.module.css'
+
 
 
 export default class ImageGalleryItem extends Component {
@@ -25,10 +27,11 @@ export default class ImageGalleryItem extends Component {
           onClick={this.toggleModal}
         />
         {isShowModal && (
-          <Modal onClose={this.toggleModal}>
-            <img src={largeImageURL} alt={tags} />
-          </Modal>
-        )}
+              <Modal onClose={this.toggleModal}>
+                <img src={largeImageURL} alt={tags} />
+              </Modal>
+            )
+        }
       </li>
     );
   };

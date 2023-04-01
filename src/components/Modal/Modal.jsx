@@ -1,6 +1,8 @@
 import { Component } from "react";
+import { createPortal } from 'react-dom';
 import css from './Modal.module.css'
 
+const modalRoot = document.querySelector('#modal-root');
 export default class Modal extends Component{
     state = {
         
@@ -10,12 +12,12 @@ export default class Modal extends Component{
         const { children, onClose } = this.props;
         
         return (
-          <div className={css.Overlay} onClick={onClose}>
-            
-              <div className={css.Modal}>{children}</div>
+            createPortal(
+                <div className={css.Overlay} onClick={onClose}>
+                    <div className={css.Modal}>{children}</div>
+                </div>, modalRoot)
 
-          </div>
-        );
+        )
     }
 
 }
