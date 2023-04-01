@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { FaSearch } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 import css from './Searchbar.module.css'
 
 export default class Searchbar extends Component {
@@ -15,7 +16,8 @@ export default class Searchbar extends Component {
     handleFormSubmit = e => {
         e.preventDefault();
         if (this.state.query.trim() === '') {
-            toast.error("Введите что-нибудь");
+          toast.error("Введіть щось");
+          this.setState({query: ''})
             return;
         }
         this.props.onSubmit(this.state.query);
@@ -45,4 +47,8 @@ export default class Searchbar extends Component {
       </header>
     );
   };
+}
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 }

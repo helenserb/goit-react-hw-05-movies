@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 import css from './Modal.module.css'
 
 const modalRoot = document.querySelector('#modal-root');
@@ -27,8 +28,12 @@ export default class Modal extends Component{
                 <div className={css.Overlay} onClick={onClose}>
                     <div className={css.Modal}>{children}</div>
                 </div>, modalRoot)
-
         )
     }
-
 }
+
+Modal.propTypes = {
+  largeImageURL: PropTypes.string.isRequired,
+  webformatURL: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+};

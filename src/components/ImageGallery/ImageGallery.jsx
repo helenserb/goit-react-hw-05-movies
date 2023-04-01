@@ -1,10 +1,11 @@
 import { Component } from 'react';
+import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 import API from '../../services/imagesApi'
-import css from './ImageGallery.module.css';
-
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import Loader from 'components/Loader/Loader';
 import { Button } from 'components/Button/Button';
+import css from './ImageGallery.module.css';
 
 export default class ImageGallery extends Component {
   state = {
@@ -23,7 +24,10 @@ export default class ImageGallery extends Component {
         this.setState({ status: 'pending' });
 
         const data = await API.fetchImages(query, page);
-        console.log(data);
+
+// toast.error('Введите что-нибудь');
+// this.setState({ query: '' });
+// return;
 
         if (data.totalHits === 0) {
           throw new Error(`По вашому запиту ${query} нічого не знайдено`);
@@ -45,9 +49,7 @@ export default class ImageGallery extends Component {
     if (status === 'idle') {
           return;
         }
-    
-        // if (status === 'pending') {
-          
+
     if (status === 'pending') {
       return images.length > 0 ? (
         <>
@@ -93,3 +95,9 @@ export default class ImageGallery extends Component {
     }
   };
 }
+
+ImageGallery.propTypes = {
+  onIncrementPage: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  query: PropTypes.string.isRequired,
+};
