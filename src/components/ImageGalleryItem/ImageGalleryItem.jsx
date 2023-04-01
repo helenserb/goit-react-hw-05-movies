@@ -1,13 +1,18 @@
-import { Component } from "react";
+import css from './ImageGalleryItem.module.css'
 
-export default class ImageGalleryItem extends Component{
-    render = () => {
+export default function ImageGalleryItem({ images }) {
+
+    return (
+      images.hits.map(image => {
         return (
-            <>
-          <li className="gallery-item">
-            <img src="" alt="" />
+          <li key={image.id} className={css.ImageGalleryItem}>
+            <img
+              src={image.webformatURL}
+              alt=""
+              className={css.ImageGalleryItemImage}
+            />
           </li>
-        </>
         )
-    }
-}
+      }))
+  }
+
