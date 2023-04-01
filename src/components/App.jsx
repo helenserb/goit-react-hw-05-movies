@@ -8,6 +8,7 @@ import ImageGallery from './ImageGallery/ImageGallery';
 
 
 
+
 export default class App extends Component {
   state = {
     query:'', 
@@ -22,7 +23,6 @@ export default class App extends Component {
     return (
       <div className={css.App}>
         <Searchbar onSubmit={this.handleSubmit} />
-        {this.state.loading && <h1>Загружаем ...</h1>}
         <ImageGallery query={this.state.query} />
         <ToastContainer autoClose={3000} />
       </div>

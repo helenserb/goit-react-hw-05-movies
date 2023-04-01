@@ -28,15 +28,6 @@ img {
   height: auto;
 }
 
-/*
- * Стили компонента ImageGalleryItem
- */
-
-
-/*
- * Стили компонента Modal
- */
-
 .Overlay {
   position: fixed;
   top: 0;

@@ -1,6 +1,9 @@
 import { Component } from 'react';
+
 import css from './ImageGallery.module.css';
+
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
+import Loader from 'components/Loader/Loader';
 
 export default class ImageGallery extends Component {
   state = {
@@ -40,7 +43,7 @@ export default class ImageGallery extends Component {
     const { images, error, status } = this.state;
 
     if (status === 'pending') {
-          return <h2>Загружаем ...</h2>;
+      return <Loader />;
         }
 
     if (status === 'rejected') {

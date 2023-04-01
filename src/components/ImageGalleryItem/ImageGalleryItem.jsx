@@ -6,7 +6,8 @@ export default function ImageGalleryItem({ images }) {
       images.hits.map(image => {
         return (
           <li key={image.id} className={css.ImageGalleryItem}>
-            <img
+            <img 
+   
               src={image.webformatURL}
               alt=""
               className={css.ImageGalleryItemImage}
