@@ -1,5 +1,5 @@
 import { Component } from 'react';
-
+import API from '../../services/imagesApi'
 import css from './ImageGallery.module.css';
 
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
@@ -17,23 +17,17 @@ export default class ImageGallery extends Component {
       this.setState({ status: 'pending'});
 
       setTimeout(() => {
-        fetch(
-          `https://pixabay.com/api/?q=${query}&page=1&key=33447943-79d2196749f400a54d8eaf5fb&image_type=photo&orientation=horizontal&per_page=12`
-        )
-          .then(response => {
-            if (!response.ok) {
-              return Promise.reject(new Error(`Упс! Щось пішло не так. Повторіть спробу`))
-          }
-              return response.json()
-            })            
+        API.fetchImages(query)
           .then(images => {
             if (images.totalHits === 0) {
-              return Promise.reject(new Error(`По вашому запиту ${query} нічого не знайдено`))
+              return Promise.reject(
+                new Error(`По вашому запиту ${query} нічого не знайдено`)
+              );
             }
-            this.setState({ images, status: 'resolved' })
+            this.setState({ images, status: 'resolved' });
           })
-            
-          .catch(error => this.setState({error, status: 'rejected'}))
+
+          .catch(error => this.setState({ error, status: 'rejected' }));
       }, 1000);
     }
   }
