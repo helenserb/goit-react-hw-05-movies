@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import API from '../../services/imagesApi'
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
@@ -24,10 +23,6 @@ export default class ImageGallery extends Component {
         this.setState({ status: 'pending' });
 
         const data = await API.fetchImages(query, page);
-
-// toast.error('Введите что-нибудь');
-// this.setState({ query: '' });
-// return;
 
         if (data.totalHits === 0) {
           throw new Error(`По вашому запиту ${query} нічого не знайдено`);
