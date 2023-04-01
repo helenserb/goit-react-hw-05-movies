@@ -47,9 +47,16 @@ export default class ImageGallery extends Component {
     if (status === 'resolved') {
           return (
         <>
-              <ul className={css.ImageGallery}>
-                <ImageGalleryItem images={images} />
-              </ul>
+          <ul className={css.ImageGallery}>
+            {images.hits.map(({ id, webformatURL, largeImageURL, tags }) => (
+              <ImageGalleryItem
+                key={id}
+                webformatURL={webformatURL}
+                largeImageURL={largeImageURL}
+                tags={tags}
+              />
+            ))}
+          </ul>
         </>
       );
     }

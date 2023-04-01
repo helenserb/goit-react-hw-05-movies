@@ -1,19 +1,23 @@
+import { Component } from 'react'
 import css from './ImageGalleryItem.module.css'
 
-export default function ImageGalleryItem({ images }) {
+export default class ImageGalleryItem extends Component {
 
-    return (
-      images.hits.map(image => {
-        return (
-          <li key={image.id} className={css.ImageGalleryItem}>
-            <img 
-   
-              src={image.webformatURL}
-              alt=""
-              className={css.ImageGalleryItemImage}
-            />
-          </li>
-        )
-      }))
+  render = () => {
+
+    const { id, webformatURL, tags } = this.props;
+
+      return (
+        <li key={id} className={css.ImageGalleryItem}>
+          <img
+            src={webformatURL}
+            alt={tags}
+            className={css.ImageGalleryItemImage}
+          />
+        </li>
+      );
+    };
   }
+    
+
 
