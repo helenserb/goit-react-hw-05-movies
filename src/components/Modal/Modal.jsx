@@ -4,10 +4,21 @@ import css from './Modal.module.css'
 
 const modalRoot = document.querySelector('#modal-root');
 export default class Modal extends Component{
-    state = {
-        
+
+    componentDidMount() {
+        window.addEventListener('keydown', this.handleKeyDown)
+    };
+
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown);
     }
 
+    handleKeyDown = e => {
+    if (e.code === 'Escape') {
+      this.props.onClose();
+    }
+      };
+    
     render = () => {
         const { children, onClose } = this.props;
         
