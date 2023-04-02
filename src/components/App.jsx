@@ -2,33 +2,95 @@ import { Component } from "react";
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import css from './App.module.css'
-
+import API from '../services/imagesApi';
 import Searchbar from "./Searchbar/Searchbar";
-import ImageGallery from './ImageGallery/ImageGallery';
+import {ImageGallery} from './ImageGallery/ImageGallery';
+import Loader from 'components/Loader/Loader';
 
-
+import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 
 
 export default class App extends Component {
   state = {
-    query: '', 
+    query: '',
     page: 1,
+    isButtonShow: false,
+    images: [],
+    status: 'idle',
   };
 
-  handleSubmit = (query) => {
-    this.setState({ query, page: 1 });
+  async componentDidUpdate(prevProps, prevState) {
+    const { query, page } = this.state;
+    if (
+      prevState.query !== query ||
+      (prevState.query === query && prevState.page !== page)
+    ) {
+      this.setState({ status: 'pending' });
+      try {
+        const data = await API.fetchImages(query, page);
+
+        if (data.totalHits === 0) {
+          throw new Error(`По вашому запиту ${query} нічого не знайдено`);
+        }
+        if (page === 1) {
+          this.setState({ images: [] });
+        }
+        this.setState(prevState => ({
+          images: [...prevState.images, ...data.hits],
+          status: 'resolved',
+          isButtonShow: page < Math.ceil(data.totalHits / 12),
+        }));
+      } catch (error) {
+        this.setState({ error, status: 'rejected' });
+      }
+    }
   }
+
+  handleSubmit = query => {
+    this.setState({ query, page: 1 });
+  };
 
   incrementPage = () => {
-    this.setState(prevState => ({page: prevState.page + 1}))
-  }
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
 
   render = () => {
-    const { query, page } = this.state;
+
+    const { images, error, status, isButtonShow } = this.state;
+
+         if (status === 'rejected') {
+           return <h2>{error.message}</h2>;
+         }
+    
+     if (status === 'pending') {
+       return images.length > 0 ? (
+         <>
+           <ul className={css.ImageGallery}>
+             {images.map(({ id, webformatURL, largeImageURL, tags }) => (
+               <ImageGalleryItem
+                 key={id}
+                 webformatURL={webformatURL}
+                 largeImageURL={largeImageURL}
+                 tags={tags}
+               />
+             ))}
+           </ul>
+           <Loader />
+         </>
+       ) : (
+         <Loader />
+       );
+     }
     return (
       <div className={css.App}>
         <Searchbar onSubmit={this.handleSubmit} />
-        <ImageGallery query={query} page={page} onIncrementPage={this.incrementPage} />
+        {status === 'resolved' && (
+          <ImageGallery
+            images={images}
+            onIncrementPage={this.incrementPage}
+            isBtnShow={isButtonShow}
+          />
+        )}
         <ToastContainer autoClose={3000} />
       </div>
     );
