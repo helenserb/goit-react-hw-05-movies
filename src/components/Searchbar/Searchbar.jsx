@@ -14,7 +14,8 @@ export default class Searchbar extends Component {
   };
 
     handleFormSubmit = e => {
-        e.preventDefault();
+      e.preventDefault();
+      window.scrollTo(0, 0);
         if (this.state.query.trim() === '') {
           toast.error("Введіть щось");
           this.setState({query: ''})

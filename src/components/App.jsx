@@ -5,9 +5,8 @@ import css from './App.module.css'
 import API from '../services/imagesApi';
 import Searchbar from "./Searchbar/Searchbar";
 import {ImageGallery} from './ImageGallery/ImageGallery';
-import Loader from 'components/Loader/Loader';
-
-import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
+// import Loader from 'components/Loader/Loader';
+// import ImageGalleryItem from "./ImageGalleryItem/ImageGalleryItem";
 
 
 export default class App extends Component {
@@ -57,42 +56,20 @@ export default class App extends Component {
   render = () => {
 
     const { images, error, status, isButtonShow } = this.state;
-
-         if (status === 'rejected') {
-           return <h2>{error.message}</h2>;
-         }
     
-     if (status === 'pending') {
-       return images.length > 0 ? (
-         <>
-           <ul className={css.ImageGallery}>
-             {images.map(({ id, webformatURL, largeImageURL, tags }) => (
-               <ImageGalleryItem
-                 key={id}
-                 webformatURL={webformatURL}
-                 largeImageURL={largeImageURL}
-                 tags={tags}
-               />
-             ))}
-           </ul>
-           <Loader />
-         </>
-       ) : (
-         <Loader />
-       );
-     }
     return (
       <div className={css.App}>
         <Searchbar onSubmit={this.handleSubmit} />
-        {status === 'resolved' && (
-          <ImageGallery
-            images={images}
-            onIncrementPage={this.incrementPage}
-            isBtnShow={isButtonShow}
-          />
-        )}
+        <ImageGallery
+          images={images}
+          onIncrementPage={this.incrementPage}
+          isBtnShow={isButtonShow}
+          status={status}
+          error={error}
+        />
+        
         <ToastContainer autoClose={3000} />
       </div>
-    );
+    )
   };
 }
