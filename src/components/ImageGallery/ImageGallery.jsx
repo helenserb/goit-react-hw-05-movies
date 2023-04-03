@@ -1,5 +1,4 @@
 
-import PropTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import css from './ImageGallery.module.css';
 
@@ -44,7 +43,3 @@ export const ImageGallery = ({ images}) => {
 
 
 
-
-  ImageGallery.propTypes = {
-    onIncrementPage: PropTypes.func.isRequired,
-  }
