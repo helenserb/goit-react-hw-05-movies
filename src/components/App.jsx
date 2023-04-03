@@ -55,14 +55,14 @@ export default class App extends Component {
 
   render = () => {
 
-    const { images, error, isButtonShow, incrementPage, isLoading} = this.state;
+    const { images, error, isButtonShow, isLoading} = this.state;
     
     return (
       <div className={css.App}>
         <Searchbar onSubmit={this.handleSubmit} />
         {images && <ImageGallery images={images} />}
         {isLoading && <Loader />}
-        {isButtonShow && <Button incrementPage={incrementPage} />}
+        {isButtonShow && <Button incrementPage={this.incrementPage} />}
         {error && <h2>{error.message}</h2>}
         <ToastContainer autoClose={3000} />
       </div>
