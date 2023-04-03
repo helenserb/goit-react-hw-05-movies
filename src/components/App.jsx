@@ -4,10 +4,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import css from './App.module.css'
 import API from '../services/imagesApi';
 import Searchbar from "./Searchbar/Searchbar";
-import {ImageGallery} from './ImageGallery/ImageGallery';
-// import Loader from 'components/Loader/Loader';
-// import ImageGalleryItem from "./ImageGalleryItem/ImageGalleryItem";
-
+import { ImageGallery } from './ImageGallery/ImageGallery';
+import { Button } from 'components/Button/Button';
+import Loader from 'components/Loader/Loader';
 
 export default class App extends Component {
   state = {
@@ -15,7 +14,8 @@ export default class App extends Component {
     page: 1,
     isButtonShow: false,
     images: [],
-    status: 'idle',
+    isLoading: false,
+    error: null,
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -24,27 +24,29 @@ export default class App extends Component {
       prevState.query !== query ||
       ( prevState.page !== page)
     ) {
-      this.setState({ status: 'pending' });
+      this.setState({ isLoading: true });
       try {
         const data = await API.fetchImages(query, page);
 
         if (data.totalHits === 0) {
+          this.setState({ isLoading: false });
           throw new Error(`По вашому запиту ${query} нічого не знайдено`);
         }
 
         this.setState(prevState => ({
           images: [...prevState.images, ...data.hits],
-          status: 'resolved',
           isButtonShow: page < Math.ceil(data.totalHits / 12),
         }));
       } catch (error) {
-        this.setState({ error, status: 'rejected' });
+        this.setState({ error });
+      } finally {
+        this.setState({ isLoading: false });
       }
     }
   }
 
   handleSubmit = query => {
-    this.setState({ query, page: 1, images: [] });
+    this.setState({ query, page: 1, images: [], error:'' });
   };
 
   incrementPage = () => {
@@ -53,21 +55,17 @@ export default class App extends Component {
 
   render = () => {
 
-    const { images, error, status, isButtonShow } = this.state;
+    const { images, error, isButtonShow, incrementPage, isLoading} = this.state;
     
     return (
       <div className={css.App}>
         <Searchbar onSubmit={this.handleSubmit} />
-        <ImageGallery
-          images={images}
-          onIncrementPage={this.incrementPage}
-          isBtnShow={isButtonShow}
-          status={status}
-          error={error}
-        />
-        
+        {images && <ImageGallery images={images} />}
+        {isLoading && <Loader />}
+        {isButtonShow && <Button incrementPage={incrementPage} />}
+        {error && <h2>{error.message}</h2>}
         <ToastContainer autoClose={3000} />
       </div>
-    )
+    );
   };
 }
