@@ -22,7 +22,7 @@ export default class App extends Component {
     const { query, page } = this.state;
     if (
       prevState.query !== query ||
-      (prevState.query === query && prevState.page !== page)
+      ( prevState.page !== page)
     ) {
       this.setState({ status: 'pending' });
       try {
@@ -31,9 +31,7 @@ export default class App extends Component {
         if (data.totalHits === 0) {
           throw new Error(`По вашому запиту ${query} нічого не знайдено`);
         }
-        if (page === 1) {
-          this.setState({ images: [] });
-        }
+
         this.setState(prevState => ({
           images: [...prevState.images, ...data.hits],
           status: 'resolved',
@@ -46,7 +44,7 @@ export default class App extends Component {
   }
 
   handleSubmit = query => {
-    this.setState({ query, page: 1 });
+    this.setState({ query, page: 1, images: [] });
   };
 
   incrementPage = () => {
