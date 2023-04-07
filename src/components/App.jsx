@@ -33,27 +33,6 @@ export const App = () => {
       }).catch(error => setError(error)).finally(setIsLoading(false))
   }, [page, query]);
 
-
-
-  //   try {
-  //     const data = API.fetchImages(query, page);
-  //     console.log(data);
-
-  //     if (data.totalHits === 0) {
-  //       setIsLoading(false);
-  //       throw new Error(`По вашому запиту ${query} нічого не знайдено`);
-  //     }
-  //     setImages(prevState => [...prevState, ...data.hits]);
-  //     setIsButtonShow(page < Math.ceil(data.totalHits / 12));
-  //   } catch (error) {
-  //     setError(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // }, [page, query]);
-
-
-
   const handleSubmit = query => {
     setQuery(query);
     setPage(1);

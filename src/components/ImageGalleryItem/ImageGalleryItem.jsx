@@ -8,7 +8,7 @@ export const ImageGalleryItem = ({ id, webformatURL, largeImageURL, tags }) => {
   const [isShowModal, setIsShowModal] = useState(false);
 
   const toggleModal = () => {
-    setIsShowModal(({ isShowModal }) => ({ isShowModal: !isShowModal }));
+    setIsShowModal(( isShowModal ) => (!isShowModal));
   };
 
   return (
