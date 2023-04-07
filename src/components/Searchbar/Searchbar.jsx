@@ -1,34 +1,31 @@
-import { Component } from "react";
+import { useState } from "react";
 import { FaSearch } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import css from './Searchbar.module.css'
 
-export default class Searchbar extends Component {
-  state = {
-    query: '',
+export const Searchbar = ({onSubmit}) => {
+const  [query, setQuery] = useState('');
+
+
+  const handleQueryChange = e => {
+  setQuery(e.currentTarget.value.toLowerCase());
   };
 
-  handleQueryChange = e => {
-    this.setState({ query: e.currentTarget.value.toLowerCase() });
-  };
-
-    handleFormSubmit = e => {
+const handleFormSubmit = e => {
       e.preventDefault();
       window.scrollTo(0, 0);
-        if (this.state.query.trim() === '') {
+        if (query.trim() === '') {
           toast.error("Введіть щось");
-          this.setState({query: ''})
+          setQuery('')
             return;
         }
-        this.props.onSubmit(this.state.query);
-        this.setState({ query: '' });
-  }
-
-  render = () => {
-    return (
+        onSubmit(query);
+        setQuery('');
+}
+  return (
       <header className={css.Searchbar}>
-        <form className={css.SearchForm} onSubmit={this.handleFormSubmit}>
+        <form className={css.SearchForm} onSubmit={handleFormSubmit}>
           <button type="submit" className={css.SearchFormButton}>
             <FaSearch />
             <span className={css.SearchFormButtonLabel}>Search</span>
@@ -40,15 +37,16 @@ export default class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={this.state.query}
+            value={query}
             name="query"
-            onChange={this.handleQueryChange}
+            onChange={handleQueryChange}
           />
         </form>
       </header>
+
     );
   };
-}
+
 
 Searchbar.propTypes = {
   onSubmit: PropTypes.func.isRequired,
