@@ -15,7 +15,7 @@ const Cast = () => {
   }, [movieId]);
 
   return (
-    <div className={css.CastWraperStuled}>
+    <div className={css.CastWrapperStyled}>
       {cast.length > 0 ? (
         <ul>
           {cast.map(({ id, name, character, profile_path }) => {
@@ -24,8 +24,8 @@ const Cast = () => {
               : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_640.png';
 
             return (
-              <li key={id} className={css.CastLiStuled}>
-                <img src={imgUrl} alt={name} className={css.CastImgStuled} />
+              <li key={id} className={css.CastLiStyled}>
+                <img src={imgUrl} alt={name} className={css.CastImgStyled} />
                 <h2>{name}</h2>
                 <p>
                   <span>Character:</span> {character}

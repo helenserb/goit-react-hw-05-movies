@@ -19,9 +19,6 @@ const MovieDetails = () => {
       .catch(err => console.log(err));
   }, [movieId]);
 
-  console.log(movieId);
-  console.log(movie);
-
   return (
     <>
       <Link to={backLinkLocationRef.current} className={css.Link}>
