@@ -1,57 +1,26 @@
-import { useState, useEffect } from "react";
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
-import css from './App.module.css'
-import API from '../services/moviesApi';
-import {Searchbar} from "./Searchbar/Searchbar";
-import { ImageGallery } from './ImageGallery/ImageGallery';
-import { Button } from 'components/Button/Button';
-import Loader from 'components/Loader/Loader';
+import { Routes, Route } from 'react-router-dom';
+import { Layout } from './Layout/Layout';
+import { lazy } from 'react';
+
+const Home = lazy(() => import('../Pages/Home/Home'));
+const Movies = lazy(() => import('../Pages/Movies/Movies'));
+const MovieDetails = lazy(() => import('../Pages/MovieDetails/MovieDetails'));
+const Cast = lazy(() => import('./Cast/Cast'));
+const Reviews = lazy(() => import('./Reviews/Reviews'));
 
 export const App = () => {
-  const [query, setQuery] = useState('');
-  const [page, setPage] = useState(1);
-  const [images, setImages] = useState([]);
-  const [isButtonShow, setIsButtonShow] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (query === '') {
-      return;
-    }
-
-    setIsLoading(true);
-    API.fetchImages(query, page).then(data => {
-        setImages(prevState => [...prevState, ...data.hits]);
-        setIsButtonShow(page < Math.ceil(data.totalHits / 12));
-
-        if (data.totalHits === 0) {
-          setIsLoading(false);
-          throw new Error(`По вашому запиту ${query} нічого не знайдено`);
-        }
-      }).catch(error => setError(error)).finally(setIsLoading(false))
-  }, [page, query]);
-
-  const handleSubmit = query => {
-    setQuery(query);
-    setPage(1);
-    setImages([]);
-    setError('')
-  };
-
-const incrementPage = () => {
-    setPage(prevState => (prevState + 1 ));
-  };
-
   return (
-    <div className={css.App}>
-      <Searchbar onSubmit={handleSubmit} />
-      {images && <ImageGallery images={images} />}
-      {isLoading && <Loader />}
-      {isButtonShow && <Button incrementPage={incrementPage} />}
-      {error && <h2>{error.message}</h2>}
-      <ToastContainer autoClose={3000} />
+    <div>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="movies" element={<Movies />} />
+          <Route path="movies/:movieId" element={<MovieDetails />}>
+            <Route path="cast" element={<Cast />} />
+            <Route path="reviews" element={<Reviews />} />
+          </Route>
+        </Route>
+      </Routes>
     </div>
   );
-}
+};
